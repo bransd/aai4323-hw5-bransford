@@ -1,7 +1,7 @@
 """
 aai4323_hw5.py
 AAI4323_5323
-October 18, 2025
+September 28, 2026
 University of Oklahoma
 
 In this script, you will rewrite the function that is used to recognize revenue from contracts.
@@ -22,7 +22,15 @@ from givens_hw5 import contracts
 
 #####################################################################
 # Standardized Header
-# TODO:  complete the standardized header.  Include author, date, purpose and the CR ID
+# Author:  Derek Bransford (OU ID:113762944)
+# Date:    September 28, 2026
+# CR ID:   CR-2026-0928-REV-001
+# Purpose: Remediate a SOX control deficiency by making revenue
+#          recognition compliant with ASC 606. Revenue is recognized
+#          only after the customer has accepted the system, meaning no
+#          fix has been requested and the 20-day acceptance window has
+#          elapsed since contract signature.
+# Approved by: Margaret Ellison, Corporate Controller (Business Owner)
 
 # #####################################################################
 
@@ -35,13 +43,17 @@ def calculate_quarterly_revenue(contracts_list: list) -> float:
     
     # TODO:  Enter the minimum number of days required to recognize revenue and create a comment
     # to explain what RECOGNITION_DAYS means
-    RECOGNITION_DAYS = 
+    RECOGNITION_DAYS = 20
     
     # TODO:  This is the current incorrect function to calculate quarterly revenue.  Fix it so that
     # it is compliant.  Include a comment that references your CR ID and explains the new logic.
     for contract in contracts_list:
-        total_revenue += contract.get('value')
-            
+        requested_fix = contract.get('requested_fix', False)
+        days_active = contract.get('days_active', 0)
+
+        if not requested_fix and days_active >= RECOGNITION_DAYS:
+            total_revenue += contract.get('value', 0.0)
+
     return total_revenue
 
 # This is the main section of the assignment that calls your functions.
